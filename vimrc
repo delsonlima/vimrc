@@ -114,19 +114,10 @@ nmap tc :!
 " NerdTree ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
-" autocmd '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-"function! HighlightWordUnderCursor()
-"    if getline(".")[col(".")-1] !~# '[[:punct:][:blank:]]'
-"        exec 'match' 'Search' '/\V\<'.expand('<cword>').'\>/'
-"    else
-"        match none
-"    endif
-"endfunction
-"autocmd! CursorHold,CursorHoldI * call HighlightWordUnderCursor()
-
 " AirLine '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:airline_theme = 'sonokai'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#coc#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
@@ -150,7 +141,11 @@ let g:ale_fix_on_save = 1
 " coc config ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:coc_global_extensions = [
 \   'coc-marketplace',
+\   'coc-diagnostic',
 \   'coc-snippets',
+\   'coc-highlight',
+\   'coc-spell-checker',
+\   'coc-cspell-dicts',
 \   'coc-pairs',
 \   'coc-lists',
 \   'coc-lightbulb',
@@ -164,13 +159,16 @@ let g:coc_global_extensions = [
 \   'coc-tsserver',
 \   'coc-docker',
 \   'coc-lua',
+\   'coc-vimlsp',
 \   'coc-yaml',
 \   'coc-json',
+\   'coc-xml',
 \   'coc-html',
 \   'coc-css',
 \   'coc-markdownlint',
 \   'coc-webview',
-\   'coc-markdown-preview-enhanced'
+\   'coc-markdown-preview-enhanced',
+\   'coc-sql'
 \]
 
 " Use tab for trigger completion with characters ahead and navigate
@@ -272,52 +270,8 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x <Plug>(coc-convert-snippet)
 
-" Coc Explrorer
+" Coc Explorer
 nnoremap <space>x :CocCommand explorer<CR>
-
-let g:coc_explorer_global_presets = {
-\   '.vim': {
-\     'root-uri': '~/.vim',
-\   },
-\   'cocConfig': {
-\      'root-uri': '~/.config/coc',
-\   },
-\   'tab': {
-\     'position': 'tab',
-\     'quit-on-open': v:true,
-\   },
-\   'tab:$': {
-\     'position': 'tab:$',
-\     'quit-on-open': v:true,
-\   },
-\   'floating': {
-\     'position': 'floating',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingTop': {
-\     'position': 'floating',
-\     'floating-position': 'center-top',
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingLeftside': {
-\     'position': 'floating',
-\     'floating-position': 'left-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'floatingRightside': {
-\     'position': 'floating',
-\     'floating-position': 'right-center',
-\     'floating-width': 50,
-\     'open-action-strategy': 'sourceWindow',
-\   },
-\   'simplify': {
-\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-\   },
-\   'buffer': {
-\     'sources': [{'name': 'buffer', 'expand': v:true}]
-\   },
-\ }
 
 " Use preset argument to open it
 nnoremap <space>ed :CocCommand explorer --preset .vim<CR>
