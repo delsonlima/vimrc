@@ -3,7 +3,7 @@ call plug#begin()
 
 Plug 'dense-analysis/ale'
 Plug 'honza/vim-snippets'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', { 'branch' : 'release' }
 Plug 'powerline/powerline'
 Plug 'preservim/nerdtree'
@@ -18,6 +18,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'wakatime/vim-wakatime'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'EdenEast/nightfox.nvim'
+"Plug 'rebelot/kanagawa.nvim'
 
 if (has("nvim"))
     " Telescope
@@ -75,24 +77,22 @@ if exists('+termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-let g:sonokai_style = 'andromeda'
-let g:sonokai_enable_italic = 2
-let g:sonokai_disable_italic_comment = 0
-let g:sonokai_diagnostic_line_highlight = 1
-let g:sonokai_current_word = 'bold'
-colorscheme sonokai
+colorscheme carbonfox
 
 " Remaps ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 map q :quit<CR>
+map <C-q> :quit<CR>
+imap <C-q> <C-o>:quit<CR>
 map <C-s> :write<CR>
+imap <C-s> <C-o>:write<CR>
 map <C-t> :terminal<CR>
 nmap <C-a> :NERDTreeToggle<CR>
 
 " Shortcuts for split navigation
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+map <leader>h <C-w>h
+map <leader>j <C-w>j
+map <leader>k <C-w>k
+map <leader>l <C-w>l
 
 " Navigate between buffers
 nmap ty :bn<CR>
@@ -115,7 +115,7 @@ nmap tc :!
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
 " AirLine '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-let g:airline_theme = 'sonokai'
+let g:airline_theme = 'minimalist'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -144,6 +144,7 @@ let g:coc_global_extensions = [
 \   'coc-diagnostic',
 \   'coc-snippets',
 \   'coc-highlight',
+\   'coc-symbol-line',
 \   'coc-spell-checker',
 \   'coc-cspell-dicts',
 \   'coc-pairs',
@@ -219,6 +220,7 @@ endfunction
 
 " Highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
+autocmd BufRead,BufNewFile * start
 
 " Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
@@ -284,8 +286,8 @@ nnoremap <space>el :CocList explPresets
 
 " Nvim specific configs ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 if (has("nvim"))
-    highlight Normal guibg=NONE ctermbg=NONE
-    highlight EndOfBuffer guibg=NONE ctermbg=NONE
+"    highlight Normal guibg=NONE ctermbg=NONE
+"    highlight EndOfBuffer guibg=NONE ctermbg=NONE
 
     " Telescope
     nnoremap <leader>ff <cmd>Telescope find_files<cr>
