@@ -1,16 +1,14 @@
-" Plugins '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Plugins ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 call plug#begin()
 
 Plug 'dense-analysis/ale'
 Plug 'honza/vim-snippets'
-"Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', { 'branch' : 'release' }
 Plug 'powerline/powerline'
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'sainnhe/sonokai'
 Plug 'sheerun/vim-polyglot'
-"Plug 'SirVer/ultisnips'
 Plug 'skanehira/preview-markdown.vim'
 Plug 'terroo/vim-simple-emoji'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -19,8 +17,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'wakatime/vim-wakatime'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'EdenEast/nightfox.nvim'
-"Plug 'rebelot/kanagawa.nvim'
+Plug 'uiiaoo/java-syntax.vim'
+Plug 'tpope/vim-commentary'
+"Plug 'jamestthompson3/nvim-remote-containers'
 
+" Nvim specific plugins
 if (has("nvim"))
     " Telescope
     Plug 'nvim-lua/plenary.nvim'
@@ -41,13 +42,13 @@ call plug#end()
 "let g:preview_markdown_parser = 'glow'
 let g:preview_markdown_auto_update = 1
 
-" Global Sets '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Global Sets ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 filetype indent on   " Load the indent file for the file type, if any
 filetype on          " Detect and set the filetype option and trigger the FileType Event
 filetype plugin on   " Load the plugin file for the file type, if any
 set autoread         " Update vim after file update from outside
 set colorcolumn=100  " Draws a line at the given line to keep aware of the line size
-"set cmdheight=2      " Give more space for displaying messages
+set cmdheight=2      " Give more space for displaying messages
 set encoding=utf-8   " The encoding should be utf-8 to activate the font icons
 set expandtab        " On pressing tab, insert 4 spaces
 set guifont=Hack:12  " Set NerdFont for dev-icons
@@ -71,7 +72,11 @@ set tabstop=4        " Show existing tab with 4 spaces width
 set updatetime=100   " Time in miliseconds to consider the changes
 syntax on            " Enable syntax highlight
 
-" Theme '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Autocmd ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Automatically enter in insert mode
+"autocmd BufRead,BufNewFile * start
+
+" Theme ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -79,7 +84,7 @@ if exists('+termguicolors')
 endif
 colorscheme carbonfox
 
-" Remaps ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Remaps '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 map q :quit<CR>
 map <C-q> :quit<CR>
 imap <C-q> <C-o>:quit<CR>
@@ -111,10 +116,21 @@ nmap tt :q<CR>
 " Call command shortcut
 nmap tc :!
 
-" NerdTree ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Resize horizontal split window
+nmap <C-Up> <C-W>-<C-W>-
+nmap <C-Down> <C-W>+<C-W>+
+" Resize vertical split window
+nmap <C-Right> <C-W>><C-W>>
+nmap <C-Left> <C-W><<C-W><
+
+" Comment line(s)
+nmap <C-c> :Commentary<CR>
+xmap <C-c> :Commentary<CR>
+
+" NerdTree '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:NERDTreeGitStatusUseNerdFonts = 1
 
-" AirLine '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" AirLine ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:airline_theme = 'minimalist'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
@@ -130,7 +146,7 @@ let g:airline_symbols.linenr = '☰ '
 let g:airline_symbols.maxlinenr = '  '
 let g:airline_symbols.dirty='⚡'
 
-" ALE '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" ALE ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 let g:ale_linters = {
 \}
 let g:ale_fixers = {
@@ -138,7 +154,8 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 
-" coc config ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Coc config '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Coc extensions
 let g:coc_global_extensions = [
 \   'coc-marketplace',
 \   'coc-diagnostic',
@@ -220,7 +237,6 @@ endfunction
 
 " Highlight the symbol and its references when holding the cursor
 autocmd CursorHold * silent call CocActionAsync('highlight')
-autocmd BufRead,BufNewFile * start
 
 " Symbol renaming
 nmap <leader>rn <Plug>(coc-rename)
@@ -229,6 +245,25 @@ nmap <leader>rn <Plug>(coc-rename)
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
+" Applying code actions to the selected code block
+" Example: <`leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected
+
+" Remap keys for applying code actions at the cursor position
+nmap <leader>ac  <Plug>(coc-codeaction-cursor
+" Remap keys for apply code actions affect whole buffer
+nmap <leader>as  <Plug>(coc-codeaction-source)
+" Apply the most preferred quickfix action to fix diagnostic on the current line
+nmap <leader>qf  <Plug>(coc-fix-current))
+
+" Remap keys for applying refactor code actions
+nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+
+" Run the Code Lens action on the current line
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
 " Add (Neo)Vim's native statusline support
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -282,7 +317,11 @@ nnoremap <space>ec :CocCommand explorer --preset cocConfig<CR>
 nnoremap <space>eb :CocCommand explorer --preset buffer<CR>
 
 " List all presets
-nnoremap <space>el :CocList explPresets
+nnoremap <space>el :CocList explPresets<CR>
+
+" Language specific configs ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+" Disable java variable highlight
+highlight link javaIdentifier NONE
 
 " Nvim specific configs ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 if (has("nvim"))
@@ -299,3 +338,17 @@ if (has("nvim"))
     nnoremap <Leader>th :lua require("telescope").extensions.vstask.history()<CR>
     nnoremap <Leader>tl :lua require('telescope').extensions.vstask.launch()<cr>
 endif
+
+" Lua configs ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+lua << EOF
+  function _G.symbol_line()
+      local curwin = vim.g.statusline_winid or 0
+      local curbuf = vim.api.nvim_win_get_buf(curwin)
+      local ok, line = pcall(vim.api.nvim_buf_get_var, curbuf, 'coc_symbol_line')
+      return ok and line or ''
+    end
+
+    vim.o.tabline = '%!v:lua.symbol_line()'
+    vim.o.statusline = '%!v:lua.symbol_line()'
+    vim.o.winbar = '%!v:lua.symbol_line()'
+EOF

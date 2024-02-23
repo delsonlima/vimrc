@@ -93,4 +93,4 @@ for i in 5 4 3 2 1 0; do
     fi
 done
 
-$EDITOR -c PlugInstall
+$EDITOR +PlugInstall +qall && $EDITOR +CocInstall +qall
