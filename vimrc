@@ -265,6 +265,16 @@ nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 " Run the Code Lens action on the current line
 nmap <leader>cl  <Plug>(coc-codelens-action)
 
+" Commands
+" Add `:Format` command to format current buffer
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
 " Add (Neo)Vim's native statusline support
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline
@@ -337,9 +347,8 @@ if (has("nvim"))
     nnoremap <Leader>ti :lua require("telescope").extensions.vstask.inputs()<CR>
     nnoremap <Leader>th :lua require("telescope").extensions.vstask.history()<CR>
     nnoremap <Leader>tl :lua require('telescope').extensions.vstask.launch()<cr>
-endif
 
-" Lua configs ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    " Lua configs
 lua << EOF
   function _G.symbol_line()
       local curwin = vim.g.statusline_winid or 0
@@ -352,3 +361,6 @@ lua << EOF
     vim.o.statusline = '%!v:lua.symbol_line()'
     vim.o.winbar = '%!v:lua.symbol_line()'
 EOF
+
+endif
+
